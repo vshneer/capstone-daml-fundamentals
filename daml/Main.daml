@@ -9,3 +9,43 @@ template MarketMakerGamblerRelationship
   
     key (gambler, marketMaker): (Party, Party)
     maintainer key._2
+
+    nonconsuming choice PredictBitcoinPrice: ContractId BitcoinPricePrediction
+      with
+        pricePrediction: Int
+        startDate: Date
+        endDate: Date
+      controller gambler 
+        do create BitcoinPricePrediction with ..
+
+
+template BitcoinPricePrediction
+  with
+    gambler: Party
+    marketMaker: Party
+    
+    pricePrediction: Int
+    startDate: Date
+    endDate: Date
+  where
+    signatory gambler, marketMaker
+  
+    choice FactCheck: ContractId BitcoinPriceFact
+      with
+        maxPrice: Int
+        minPrice: Int
+      controller marketMaker
+        do
+          let gamblerWin = (pricePrediction <= maxPrice && pricePrediction >= minPrice)
+          create BitcoinPriceFact with prediction=this, ..
+
+template BitcoinPriceFact
+  with
+    marketMaker: Party
+    
+    prediction: BitcoinPricePrediction
+    maxPrice: Int
+    minPrice: Int
+    gamblerWin: Bool
+  where
+    signatory marketMaker
