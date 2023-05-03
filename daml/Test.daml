@@ -3,6 +3,9 @@ module Test where
 import Daml.Script
 
 import Main
+import DA.Optional (fromSomeNote)
+import DA.Date (date)
+import DA.Date.Types (Month(..))
 
 data Participants = Participants 
   with
@@ -25,3 +28,21 @@ setup = script do
   let participants = Participants with ..
 
   return(participants)
+
+predictionFlowTest: Script()
+predictionFlowTest = script do
+  Participants{..} <- setup
+
+  marketMakerGamblerRelationshipCid <- 
+        fst . fromSomeNote "Relationships are not established" 
+            <$> queryContractKey @MarketMakerGamblerRelationship gambler (gambler, marketMaker)
+
+  let 
+    pricePrediction = 30000
+    startDate       = date 2023 Apr 1 
+    endDate         = date 2023 May 1
+    maxPrice = 31_000
+    minPrice = 26_000
+  predictionCid <- submit gambler do exerciseCmd marketMakerGamblerRelationshipCid PredictBitcoinPrice with ..
+  fact <- submit marketMaker do exerciseCmd predictionCid FactCheck with ..
+  debug "predictionFlowTest finished"
