@@ -8,8 +8,8 @@ A signatory can create a BitcoinPricePrediction contract. BitcoinPricePrediction
 
 ## Workflow
 
-To make prediction a gambler needs to create a Relationship contract with a marketMaker. Using this contract gambler can create BitcoinPricePrediction contracts.  
-When BitcoinPricePrediction contract is created it can FackChecked by a marketMaker. As a result of a FackCheck a new BitcoinPriceFact is created.
+To make prediction a gambler needs to create a Relationship contract with a marketMaker. Using this contract the gambler can create BitcoinPricePrediction contracts.  
+When BitcoinPricePrediction contract is created it can FactChecked by a marketMaker. As a result of a FactCheck a new BitcoinPriceFact is created.
 
 ## Building
 
