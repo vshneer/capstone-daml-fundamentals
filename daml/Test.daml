@@ -2,6 +2,8 @@ module Test where
 
 import Daml.Script
 
+import Main
+
 data Participants = Participants 
   with
     marketMaker: Party
@@ -18,6 +20,8 @@ setup = script do
   createUser (User marketMakerId (Some marketMaker)) [CanActAs marketMaker]
 -- user_setup_end
 
+  submitMulti [gambler, marketMaker] [] do createCmd MarketMakerGamblerRelationship with ..
+
   let participants = Participants with ..
-  
+
   return(participants)
