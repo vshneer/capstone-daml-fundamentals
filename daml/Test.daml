@@ -1,0 +1,23 @@
+module Test where
+
+import Daml.Script
+
+data Participants = Participants 
+  with
+    marketMaker: Party
+    gambler: Party
+
+setup : Script (Participants)
+setup = script do
+-- user_setup_begin
+  gambler <- allocatePartyWithHint "Gambler" (PartyIdHint "Gambler")
+  marketMaker <- allocatePartyWithHint "MarketMaker" (PartyIdHint "MarketMaker")
+  gamblerId <- validateUserId "gambler"
+  marketMakerId <- validateUserId "marketMaker"
+  createUser (User gamblerId (Some gambler)) [CanActAs gambler]
+  createUser (User marketMakerId (Some marketMaker)) [CanActAs marketMaker]
+-- user_setup_end
+
+  let participants = Participants with ..
+  
+  return(participants)
