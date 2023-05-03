@@ -1,3 +1,11 @@
 module Main where
 
-
+template MarketMakerGamblerRelationship
+  with 
+    gambler: Party
+    marketMaker: Party
+  where
+    signatory gambler, marketMaker
+  
+    key (gambler, marketMaker): (Party, Party)
+    maintainer key._2
