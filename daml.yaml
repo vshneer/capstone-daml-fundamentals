@@ -4,7 +4,7 @@
 sdk-version: 2.5.0
 name: capproject
 source: daml
-init-script: Main:setup
+init-script: Test:setup
 version: 0.0.1
 dependencies:
   - daml-prim
