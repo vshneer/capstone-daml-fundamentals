@@ -49,3 +49,4 @@ template BitcoinPriceFact
     gamblerWin: Bool
   where
     signatory marketMaker
+    observer prediction.gambler
